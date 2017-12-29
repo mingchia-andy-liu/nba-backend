@@ -5,9 +5,12 @@ const cookieSession = require('cookie-session')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
+const RateLimit = require('express-rate-limit');
 
 const keys = require('./config/keys')
 const PORT = process.env.PORT || 9999
+
+app.set('trust proxy', 'loopback')
 
 // Middlewares
 app.use(helmet({contentSecurityPolicy: {
@@ -42,7 +45,12 @@ app.use(cookieSession({
     }
 }))
 app.use(bodyParser.json())
-
+const limiter = new RateLimit({
+    windowMs: 60 * 1000, // in ms, 1 minute
+    max: 5, // limit each IP to 100 requests per windowMs
+    delayMs: 0 // disable delaying - full speed until the max limit is reached
+});
+app.use(limiter)
 
 // Routes
 app.use('/api', require('./routes'))
