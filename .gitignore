@@ -98,3 +98,7 @@ typings/
 .history
 
 # End of https://www.gitignore.io/api/node,macos,visualstudiocode
+
+# configuration
+/server/config/keys/dev.js
+/server/config/db.json

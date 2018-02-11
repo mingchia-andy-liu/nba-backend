@@ -52,6 +52,9 @@ const limiter = new RateLimit({
 });
 app.use(limiter)
 
+// db setup
+require('./db')
+
 // Routes
 app.use('/api', require('./routes'))
 

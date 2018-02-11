@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,9 @@
     "express": "^4.16.2",
     "express-rate-limit": "^2.11.0",
     "helmet": "^3.9.0",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "mysql": "^2.15.0",
+    "sqlstring": "^2.3.0",
+    "pg": "^7.4.1"
   }
 }
