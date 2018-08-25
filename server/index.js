@@ -8,7 +8,7 @@ const logger = require('morgan')
 const RateLimit = require('express-rate-limit');
 
 const keys = require('./config/keys')
-const PORT = process.env.PORT || 9999
+const PORT = process.env.PORT || 8080
 
 app.set('trust proxy', 'loopback')
 
@@ -31,7 +31,14 @@ app.use(helmet({contentSecurityPolicy: {
         frameSrc: ["'none'"]
     },
 }}))
-app.use(logger('common'))
+if (process.env.NODE_ENV === 'development') {
+    app.use(logger('dev'))
+} else {
+    // Only logs error
+    app.use(logger('common', {
+        skip: function (req, res) { return res.statusCode < 400 }
+    }))
+}
 app.use(cookieParser({
     secret: keys.cookieKey,
 }))

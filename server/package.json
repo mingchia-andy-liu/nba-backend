@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node .",
+    "start:dev": "NODE_ENV=\"development\" node ."
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,6 @@
     "helmet": "^3.9.0",
     "morgan": "^1.9.0",
     "mysql": "^2.15.0",
-    "sqlstring": "^2.3.0",
-    "pg": "^7.4.1"
+    "sqlstring": "^2.3.0"
   }
 }

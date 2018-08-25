@@ -1,24 +1,26 @@
-version: '3.1'
+version: '3.6'
 
 services:
-    db:
-        image: postgres
-        restart: always
-        environment:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: password
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - mysql
+    # Override the default command (in this case, in Dockerfile)
+    command: sh -c '/usr/app/scripts/wait-for.sh mysql:3306 -- npm start'
+    ports:
+      - 9999:8080
 
-    server:
-        build:
-            context: ./server
-            dockerfile: Dockerfile
-        ports:
-            - '8080:80'   # host:guest
-        depends_on:
-            - db
-        # wait for the database to be ready before it runs the server.js
-        # https://docs.docker.com/compose/startup-order/
-        command: sh -c '/server/scripts/wait-for.sh db:5432 -- npm start'
-        environment:
-            - DATABASE_URL=postgres://postgres:password@db:5432/postgres
-            - PORT=80
+  mysql:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    restart: always
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
