@@ -61,6 +61,7 @@ app.use(limiter)
 
 // db setup
 require('./db')
+require('./scripts/job')
 
 // Routes
 app.use('/api', require('./routes'))
@@ -69,7 +70,6 @@ app.use('/api', require('./routes'))
 app.get('*', (req, res) => {
     res.sendStatus(400)
 })
-
 
 app.listen(PORT, () => {
     console.log(`👂 App is listening on the port ${PORT}`)
