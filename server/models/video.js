@@ -1,6 +1,7 @@
-const { getConnection, select } = require('../db')
+const { getConnection, select, insert } = require('../db')
 
-const findByGidQuery = 'SELECT video_id FROM video WHERE video.game_id = ?'
+const findByGidQuery = 'SELECT video_id FROM video WHERE game_id = ?'
+const InsertVideoIdByGidQuery = `INSERT INTO video (game_id, video_id) VALUES (?, ?)`
 
 class Video {
     constructor() {
@@ -10,9 +11,22 @@ class Video {
         try {
             const conn = await getConnection()
             const res = await select(conn, findByGidQuery, [gid])
+            console.log('[FindVideoByGid]', res)
             return res
         } catch (err) {
-            throw err
+            console.log('[FindVideoByGid]', err)
+            return null
+        }
+    }
+
+    async InsertVideoIdByGid(gid, vid) {
+        try {
+            const conn = await getConnection()
+            const res = await insert(conn, InsertVideoIdByGidQuery, [gid, vid])
+            return res
+        } catch (err) {
+            console.log('[InsertVideoIdByGid]', err)
+            return null
         }
     }
 }

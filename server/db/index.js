@@ -25,10 +25,11 @@ const getConnection = () => {
 const sqlMethod = (conn, sql, params) => {
     return new Promise((resolve, reject) => {
         const sanitized = sqlstring.format(sql, params)
+        console.log('sanitized:', sanitized)
         conn.query(sanitized, (err, res) => {
             conn.release()
             if (err) {
-                console.log(sql, params, err)
+                console.log(sql, sanitized, params, err)
                 reject(err)
             }
             resolve(res)
