@@ -4,17 +4,15 @@ const findByGidQuery = 'SELECT video_id FROM video WHERE game_id = ?'
 const InsertVideoIdByGidQuery = `INSERT INTO video (game_id, video_id) VALUES (?, ?)`
 
 class Video {
-    constructor() {
-    }
+    constructor() {}
 
     async FindVideoByGid(gid) {
         try {
             const conn = await getConnection()
             const res = await select(conn, findByGidQuery, [gid])
-            console.log('[FindVideoByGid]', res)
             return res
         } catch (err) {
-            console.log('[FindVideoByGid]', err)
+            console.debug('[FindVideoByGid] error', err)
             return null
         }
     }
@@ -25,7 +23,7 @@ class Video {
             const res = await insert(conn, InsertVideoIdByGidQuery, [gid, vid])
             return res
         } catch (err) {
-            console.log('[InsertVideoIdByGid]', err)
+            console.debug('[InsertVideoIdByGid] error', err)
             return null
         }
     }

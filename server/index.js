@@ -54,7 +54,7 @@ app.use(cookieSession({
 app.use(bodyParser.json())
 const limiter = new RateLimit({
     windowMs: 60 * 1000, // in ms, 1 minute
-    max: 5, // limit each IP to 100 requests per windowMs
+    max: 6, // limit each IP to 6 requests per windowMs
     delayMs: 0 // disable delaying - full speed until the max limit is reached
 });
 app.use(limiter)
@@ -72,5 +72,7 @@ app.get('*', (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`👂 App is listening on the port ${PORT}`)
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`👂 App is listening on the port ${PORT}`)
+    }
 })

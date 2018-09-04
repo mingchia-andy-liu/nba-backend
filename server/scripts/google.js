@@ -1,5 +1,4 @@
 const {google} = require('googleapis');
-const addDays = require('date-fns/add_days')
 
 const keys = require('../config/keys')
 
@@ -9,7 +8,10 @@ const youtube = google.youtube({
     auth: keys.youtubeKey,
 })
 
-// a very simple example of searching for youtube videos
+/**
+ * a function to search video base on the given serach term on MLG channel
+ * @param {string} term
+ */
 async function query (term) {
     try {
         const res = await youtube.search.list({
