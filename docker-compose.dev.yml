@@ -6,12 +6,14 @@ services:
       context: ./server
       dockerfile: Dockerfile
     restart: always
+    environment:
+      TZ: "America/New_York"
     depends_on:
       - mysql
     # Override the default command (in this case, in Dockerfile)
     command: sh -c '/usr/app/scripts/wait-for.sh mysql:3306 -- npm start'
     ports:
-      - 9999:8080
+      - 8080:8080
 
   mysql:
     build:

@@ -1,24 +1,37 @@
 const CronJob = require('cron').CronJob;
-const format = require('date-fns/format')
-const addDays = require('date-fns/add_days')
-const parse = require('date-fns/parse')
+const moment = require('moment-timezone')
 const fetch = require("node-fetch")
 
 const query = require('./google')
 const Video = require('../models/video')
 
+const DATE_FORMAT = 'YYYYMMDD'
+
 const formatSearchQuery = (htc, htn, vtc, vtn, date) => {
-    const gameDate = parse(date, 'YYYYMMDD', new Date())
-    return `${htc} ${htn} vs ${vtc} ${vtn} Full Game Highlights / ${format(gameDate, 'MMMM DD')} / 2017-18 NBA Season`
+    const momentObj = moment(date)
+    return `${htc} ${htn} vs ${vtc} ${vtn} Full Game Highlights ${momentObj.format('MM.DD.YYYY')} | NBA Season`
+}
+
+const apiDate = () => {
+    const ET = moment.tz(new Date(), 'America/New_York')
+    const EThour = moment(ET).format('HH')
+    let res
+    // if ET time has not pass 6 am, don't jump ahead
+    if (+EThour < 6) {
+        res = moment(ET).subtract(1, 'day').format(DATE_FORMAT)
+    } else {
+        res = ET.format(DATE_FORMAT)
+    }
+    return moment(res, DATE_FORMAT)
 }
 
 // read cron patterns at http://crontab.org/
-// Cron jobs: At minute 0, past every hour from 16 through 23.
-// timezone: PST (America/Los_Angeles) and it will get ran on start
-const job = new CronJob('0 0 16-23 * * *', async () => {
+// At minute 0 past every hour from 0 through 3 and every hour from 18 through 23.
+// timezone: ET (America/New_York) and it will get ran on start
+const job = new CronJob('0 0-3,18-23 * * *', async () => {
     // should look up vids and insert to mysql
-    const today = new Date()
-    dateStr = format(today, 'YYYYMMDD')
+    const today = apiDate()
+    dateStr = today.format(DATE_FORMAT)
 
     let daily = []
     try {
@@ -55,17 +68,15 @@ const job = new CronJob('0 0 16-23 * * *', async () => {
                 // find the highlight
                 const item = data.items[0]
                 const { id: {videoId}, snippet: {title}} = item
-                if ((title.includes(format(today, 'MMMM D')) ||
-                        title.includes(format(today, 'MMM D'))) &&
+                if ((title.includes(today.format('MM.DD')) ||
+                    title.includes(today.format('MM.DD'))) &&
                     title.includes(htc) &&
-                    title.includes(vtc)) {
+                    title.includes(vtc) &&
+                    title.includes('Full')) {
                         // only insert if the first search result is almost what we look for
                         await v.InsertVideoIdByGid(game.id, videoId)
                 }
             }
         }
     }))
-}, null, true, 'America/Los_Angeles')
-
-// Start the job
-job.start();
+}, null, true, 'America/New_York')

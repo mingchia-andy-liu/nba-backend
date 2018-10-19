@@ -1,7 +1,7 @@
 #!/bin/sh
 #source: https://github.com/eficode/wait-for
 
-TIMEOUT=15
+TIMEOUT=60
 QUIET=0
 
 echoerr() {

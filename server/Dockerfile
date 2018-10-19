@@ -14,4 +14,4 @@ RUN yarn --non-interactive --silent
 COPY . .
 RUN chmod +x ./scripts/wait-for.sh
 
-CMD ["node", "start"]
+CMD ["npm", "start"]
