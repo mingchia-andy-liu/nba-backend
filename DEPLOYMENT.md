@@ -14,7 +14,7 @@
 
 
 ## Install dependencies
-1. Go to the (aws)[https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-2-connect-to-instance.html#sshclient] to see **connect to instance**
+1. Go to the [aws](https://docs.aws.amazon.com/quickstarts/latest/vmlaunch/step-2-connect-to-instance.html#sshclient) to see **connect to instance**
     1. `$ chmod 400 my-key-pair.pem`
     1. `$ ssh -i /path/my-key-pair.pem ec2-user@public_dns_name`
         - default user name is `ec2-user`
@@ -29,7 +29,7 @@ You need to re-ssh in the instance for the user configuration to take effect
 
 
 #### Install `Docker-compose`
-1. Go to the (Docker)[https://docs.docker.com/compose/install/#install-compose] to install `Compose`
+1. Go to the [Docker](https://docs.docker.com/compose/install/#install-compose) to install `Compose`
     1. `$ sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
         1. Use the latest version
     1. `sudo chmod +x /usr/local/bin/docker-compose`
