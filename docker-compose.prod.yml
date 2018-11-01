@@ -2,19 +2,14 @@ version: '3.6'
 
 services:
   server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
+    image: 354634314980.dkr.ecr.us-east-2.amazonaws.com/nba-backend-server
     restart: always
     depends_on:
       - mysql
-    # Override the default command (in this case, in Dockerfile)
     command: sh -c '/usr/app/scripts/wait-for.sh mysql:3306 -- npm start'
     ports:
-      - 8080:8080
+      - 80:8080
 
   mysql:
-    build:
-      context: ./db
-      dockerfile: Dockerfile
+    image: 354634314980.dkr.ecr.us-east-2.amazonaws.com/nba-backend-db
     restart: always

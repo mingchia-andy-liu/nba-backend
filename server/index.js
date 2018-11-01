@@ -53,8 +53,8 @@ app.use(cookieSession({
 }))
 app.use(bodyParser.json())
 const limiter = new RateLimit({
-    windowMs: 60 * 1000, // in ms, 1 minute
-    max: 6, // limit each IP to 6 requests per windowMs
+    windowMs: 30 * 1000, // in ms, 30 seconds
+    max: 10, // limit each IP to 6 requests per windowMs
     delayMs: 0 // disable delaying - full speed until the max limit is reached
 });
 app.use(limiter)
